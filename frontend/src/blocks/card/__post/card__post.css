@@ -1,0 +1,8 @@
+.card__post {
+  display: flex;
+  width: calc(100% - 21px * 2);
+  height: 72px;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+}

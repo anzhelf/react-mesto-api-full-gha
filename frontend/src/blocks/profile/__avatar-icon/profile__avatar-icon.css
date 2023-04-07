@@ -1,0 +1,15 @@
+.profile__avatar-icon {
+	transition: opacity 0.2s linear 0.1s;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.profile__avatar-icon:hover {
+	opacity: 1;
+}

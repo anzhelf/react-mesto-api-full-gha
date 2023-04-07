@@ -1,0 +1,17 @@
+.content {
+  margin: 0 auto;
+  max-width: 880px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 950px) {
+  .content {
+    padding: 0 24px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .content {
+    padding: 0 19px;
+  }
+}

@@ -1,0 +1,6 @@
+.popup__card-image {
+  object-fit: contain;
+  max-width: 75vw;
+  max-height: 75vh;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+}

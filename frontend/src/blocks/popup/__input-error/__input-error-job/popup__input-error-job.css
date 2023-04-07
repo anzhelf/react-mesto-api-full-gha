@@ -1,0 +1,9 @@
+.popup__input-error-job {
+	bottom: 128px;
+}
+
+@media screen and (max-width: 950px) {
+	.popup__input-error-job {
+		bottom: 106px;
+	}
+}

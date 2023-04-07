@@ -111,10 +111,14 @@ const login = async (req, res, next) => {
       'some-secret-key',
       { expiresIn: '7d' },
     );
-    return res.cookie('jwt', token, {
-      maxAge: 3600000 * 24 * 7,
-      httpOnly: true,
-    }).send({ message: `Этот токен безопасно сохранен в httpOnly куку: ${token}` });
+
+    return res.status(200).send({ data: token });
+    // return res.cookie('jwt', token, {
+    //   maxAge: 3600000 * 24 * 7,
+    //   httpOnly: true,
+    // }).send({ message: `Этот токен безопасно сохранен в httpOnly куку: ${token}` });
+
+
   } catch (e) {
     if (e.name === 'ValidationError') {
       return next(new BadReqestError('Переданы некорректные данные при создании.'));

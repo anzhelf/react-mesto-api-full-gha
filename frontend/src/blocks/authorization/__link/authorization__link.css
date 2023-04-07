@@ -1,0 +1,12 @@
+.authorization__link {
+  font-style: normal;
+  color: #FFFFFF;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.2s linear 0.1s;
+}
+
+.authorization__link:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

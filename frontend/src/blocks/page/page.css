@@ -1,6 +1,8 @@
 .page {
   min-width: 320px;
   background-color: #000;
+  min-height: 100vh;
+  width: 100%;
   padding-top: 45px;
   font-family: "Neue Machina", Arial, Helvetica, sans-serif;
   margin: 0 auto;

@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import useForm from '../hooks/useForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [nameCard, setNameCard] = useState('');
-  const [link, setLink] = useState('');
+  const { values, handleChange, setValues } = useForm({});
 
   useEffect(() => {
-    setNameCard('');
-    setLink('');
+    setValues({ name: '', link: '' });
   }, [isOpen]);
-
-  function handleChangeNameCard(e) {
-    setNameCard(e.target.value);
-  }
-
-  function handleLinkCard(e) {
-    setLink(e.target.value);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
     onAddPlace({
-      name: nameCard,
-      link: link
+      name: values.name,
+      link: values.link
     });
   }
 
@@ -36,8 +27,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       onSubmit={handleSubmit} >
       <label className="popup__label">
         <input
-          onChange={handleChangeNameCard}
-          value={nameCard}
+          onChange={handleChange}
+          value={values.name || ''}
           name='name'
           type="text"
           id="namecard"
@@ -51,8 +42,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
       <label className="popup__label popup__label_last-element">
         <input
-          onChange={handleLinkCard}
-          value={link}
+          onChange={handleChange}
+          value={values.link || ''}
           name='link'
           type="url"
           id="link"

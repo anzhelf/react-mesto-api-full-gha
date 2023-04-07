@@ -1,0 +1,11 @@
+.authorization__container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  margin: 0 auto;
+  padding: 60px 0 0;
+  width: 358px;
+  max-height: 100%;
+  box-sizing: border-box;
+}

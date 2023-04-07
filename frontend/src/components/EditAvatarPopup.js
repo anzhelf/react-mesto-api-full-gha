@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import useForm from '../hooks/useForm';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const [avatar, setAvatar] = useState('');
+  const { values, handleChange, setValues } = useForm({});
 
   useEffect(() => {
-    setAvatar('');
+    setValues({ name: '', link: '' });
   }, [isOpen]);
-
-  function handleAvatarProfile(e) {
-    setAvatar(e.target.value);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onUpdateAvatar({
-      avatar: avatar
+      avatar: values.avatar
     });
   }
 
@@ -31,8 +28,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     >
       <label className="popup__label popup__label_last-element">
         <input
-          onChange={handleAvatarProfile}
-          value={avatar}
+          onChange={handleChange}
+          value={values.avatar || ''}
           name='avatar'
           type="url"
           id="avatar"

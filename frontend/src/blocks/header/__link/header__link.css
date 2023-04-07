@@ -1,0 +1,40 @@
+.header__link {
+  font-weight: 400;
+  font-family: 'Inter';
+  font-style: normal;
+  text-align: right;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.header__link-authorization {
+  color: #A9A9A9;
+}
+
+.header__box {
+  box-sizing: border-box;
+  padding: 6px 0 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.header__email {
+  font-weight: 500;
+  font-family: 'Inter';
+  font-style: normal;
+  text-align: right;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 22px;
+  margin-right: 24px;
+}
+
+@media screen and (max-width: 320px) {
+  .header__link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

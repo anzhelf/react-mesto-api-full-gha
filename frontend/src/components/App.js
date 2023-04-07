@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import api from '../utils/Api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
+
+import { api } from '../utils/Api';
+import { auth } from '../utils/Auth';
+
+import '../index.css';
+
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -8,27 +15,39 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-import '../index.css';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Register from './Register';
+import Login from './Login';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
+  const history = useHistory();
+  //Данные  api
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
+  //Статусы попапов
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
-
   const [selectedCard, setSelectedCard] = useState({});
+
+  //попап ответа сервера
+  const [isStatusPopupOpen, setIsStatusPopupOpen] = useState(false);
+
+  //Авторизован пользователь или нет
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+
+  //как прошел запрос к api
+  const [requestStatus, setRequestStatus] = useState(false);
 
   useEffect(() => {
     Promise.all([api.getDataUser(), api.getInitialCards()])
       .then(([dataUser, dataCards]) => {
         setCurrentUser(dataUser);
-        console.log(dataUser);
-        console.log(dataCards);
         setCards(dataCards);
       })
       .catch((err) => console.log(err));
@@ -85,7 +104,27 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
     setSelectedCard({});
+    setIsStatusPopupOpen(false);
   }
+
+  const isOpen =
+    isEditAvatarPopupOpen
+    || isEditProfilePopupOpen
+    || isAddPlacePopupOpen
+    || selectedCard
+  useEffect(() => {
+    function closeByEscape(e) {
+      if (e.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) { // навешиваем только при открытии
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen])
 
   function handleUpdateUser(data) {
     api.editDataUser(data.name, data.about)
@@ -116,19 +155,93 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleAddUser(data) {
+    auth.register(data.email, data.password)
+      .then(() => {
+        setRequestStatus(true);
+        history.push('/sign-in');
+      })
+      .catch((err) => {
+        console.log(err);
+        setRequestStatus(false);
+      })
+      .finally(() => {
+        setIsStatusPopupOpen(true);
+      });
+  }
+
+  function handleAuthorization(data) {
+    auth.authorize(data.email, data.password)
+      .then((res) => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('email', data.email);
+        setEmail(data.email);
+        setLoggedIn(true);
+        history.push('/');
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function tokenCheck() {
+    // если у пользователя есть токен в localStorage, 
+    // эта функция проверит, действующий он или нет
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
+      // здесь будем проверять токен
+      auth.checkToken(token)
+        .then((res) => {
+          if (res) {
+            // авторизуем пользователя
+            setLoggedIn(true);
+            history.push('/');
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, [])
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+        <Header
+          onLogged={loggedIn}
+          email={email}
         />
+        <Switch>
+
+          <ProtectedRoute
+            exact
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+
+          <Route path="/sign-up">
+            <Register
+              onUpdateAddUser={handleAddUser}
+            />
+          </Route>
+
+          <Route path="/sign-in">
+            <Login
+              tokenCheck={tokenCheck}
+              onUpdateAuthorization={handleAuthorization}
+            />
+          </Route>
+
+        </Switch>
         <Footer />
 
         <EditAvatarPopup
@@ -161,6 +274,13 @@ function App() {
           isOpen={isImagePopupOpen}
           onClose={closeAllPopups}
         />
+
+        <InfoTooltip
+          requestStatus={requestStatus}
+          isOpen={isStatusPopupOpen}
+          onClose={closeAllPopups}
+        />
+
       </CurrentUserContext.Provider>
     </div>
   );

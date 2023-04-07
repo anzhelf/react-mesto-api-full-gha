@@ -1,32 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import useForm from '../hooks/useForm';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const currentUser = useContext(CurrentUserContext);
+  const { values, handleChange, setValues } = useForm({});
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
   useEffect(() => {
-    setNameProfile(currentUser.name);
-    setDescription(currentUser.about);
+    setValues({
+      name: currentUser.name,
+      about: currentUser.about
+    });
   }, [isOpen]);
-
-  const [nameProfile, setNameProfile] = useState(currentUser.name);
-  const [description, setDescription] = useState(currentUser.about);
-
-  function handleNameProfile(e) {
-    setNameProfile(e.target.value);
-  }
-  function handleDescription(e) {
-    setDescription(e.target.value);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
     // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser({
-      name: nameProfile,
-      about: description
+      name: values.name,
+      about: values.about
     });
   }
 
@@ -40,8 +34,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       onSubmit={handleSubmit} >
       <label className="popup__label">
         <input
-          onChange={handleNameProfile}
-          value={nameProfile || ''}
+          onChange={handleChange}
+          value={values.name || ''}
           name="name"
           type="text"
           id="username"
@@ -56,8 +50,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
       <label className="popup__label popup__label_last-element">
         <input
-          onChange={handleDescription}
-          value={description || ''}
+          onChange={handleChange}
+          value={values.about || ''}
           name="about"
           type="text"
           id="biography"
@@ -69,7 +63,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         />
         <span className="biography-input-error popup__input-error-job"></span>
       </label>
-
     </PopupWithForm>
   )
 }

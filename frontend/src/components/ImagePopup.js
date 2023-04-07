@@ -1,6 +1,11 @@
 function ImagePopup({ card, isOpen, onClose }) {
+  function closeByOverlay(e) {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }
   return (
-    <div className={`popup ${isOpen && 'popup_opened'}`}>
+    <div onClick={closeByOverlay} className={`popup ${isOpen && 'popup_opened'}`}>
       <div className="popup__box popup__card-container">
         <button
           className="popup__close-icon"

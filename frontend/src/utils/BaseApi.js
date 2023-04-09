@@ -5,7 +5,7 @@ export class BaseApi {
     this._headers = config.headers;
   }
 
-  _checkResponse(res) {
+  _checkResponse(res, err) {
     if (res.ok) {
       return res.json();
     }

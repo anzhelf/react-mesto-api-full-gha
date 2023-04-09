@@ -13,7 +13,6 @@ function Main({
   onAddPlace
 }) {
   const currentUser = useContext(CurrentUserContext);
-
   const cardsElements = cards.map((card) => (
     <Card
       key={card._id}

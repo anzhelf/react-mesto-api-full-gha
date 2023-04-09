@@ -33,7 +33,6 @@ const deleteCard = async (req, res, next) => {
   const admin = req.user._id;
   try {
     const card = await Card.findById(cardId);
-
     if (card === null) {
       throw new NotFoundError(`Карточка ${cardId} не найдена.`);
     }
@@ -57,20 +56,19 @@ const deleteCard = async (req, res, next) => {
 const updateLike = async (req, res, method, next) => {
   try {
     const { cardId } = req.params;
-
     const card = await Card.findByIdAndUpdate(
       cardId,
       { [method]: { likes: req.user._id } },
       { new: true },
     );
-
     if (card === null) {
       throw new NotFoundError('Карточка по указанному id не найдена.');
     }
-
+    console.log(card.likes)
     return res.send({ likes: card.likes });
   } catch (e) {
     if (e.name === 'CastError') {
+      console.log('легли', e);
       return next(new BadReqestError('Передан некорректный id карточки.'));
     }
     return next(e);

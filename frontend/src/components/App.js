@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import ReactDOM from 'react-dom/client';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 import { api } from '../utils/Api';
 import { auth } from '../utils/Auth';
@@ -40,18 +39,19 @@ function App() {
   //Авторизован пользователь или нет
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
-
   //как прошел запрос к api
   const [requestStatus, setRequestStatus] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.getDataUser(), api.getInitialCards()])
-      .then(([dataUser, dataCards]) => {
-        setCurrentUser(dataUser);
-        setCards(dataCards);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getDataUser(), api.getInitialCards()])
+        .then(([dataUser, dataCards]) => {
+          setCurrentUser(dataUser);
+          setCards(dataCards);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -72,16 +72,21 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке 
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((id) => id === currentUser._id);
 
     if (!isLiked) {
+      console.log('нет лайка, передаем id в апи', card._id);
       api.likeCard(card._id)
         .then((newCard) => {
+          console.log('newCard', newCard);
           setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
+          console.log('cards', cards);
         })
         .catch((err) => console.log(err));
     }
+
     else {
+      console.log('есть лайк, передаем id в апи', card._id);
       api.deleteLikeCard(card._id)
         .then((newCard) => {
           setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
@@ -183,12 +188,11 @@ function App() {
   }
 
   function tokenCheck() {
-    // если у пользователя есть токен в localStorage, 
-    // эта функция проверит, действующий он или нет
-    if (localStorage.getItem('token')) {
-      const token = localStorage.getItem('token');
-      // здесь будем проверять токен
-      auth.checkToken(token)
+    // Проверяем наличие токена
+    const token = localStorage.getItem('token');
+    if (token) {
+      auth
+        .checkToken(token)
         .then((res) => {
           if (res) {
             // авторизуем пользователя
@@ -196,7 +200,7 @@ function App() {
             history.push('/');
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err, "Ошибка авторизации."));
     }
   }
 

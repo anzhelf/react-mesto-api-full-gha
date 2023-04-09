@@ -3,9 +3,10 @@
 // подключаем пакеты
 const express = require('express');
 const mongoose = require('mongoose');
-// const patch = require('path');
+const patch = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const { url } = require('./utils/regularExpressions');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -23,12 +24,22 @@ const PORT = 3001;
 // создали сервер
 const app = express();
 
+//статика
+app.use(express.static(patch.join(__dirname + 'frontend')));
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.post('/signup', celebrate({
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', "*");
+//   next();
+// });
+
+
+app.post('/sign-up', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
@@ -38,7 +49,7 @@ app.post('/signup', celebrate({
   }),
 }), createUser); // создаёт пользователя
 
-app.post('/signin', celebrate({
+app.post('/sign-in', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),

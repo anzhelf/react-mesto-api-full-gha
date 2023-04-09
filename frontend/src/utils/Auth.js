@@ -8,7 +8,7 @@ class Auth extends BaseApi {
   }
 
   register(email, password) {
-    return super._request(`${this._url}/signup`, {
+    return super._request(`${this._url}/sign-up`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
@@ -19,7 +19,7 @@ class Auth extends BaseApi {
   }
 
   authorize(email, password) {
-    return super._request(`${this._url}/signin`, {
+    return super._request(`${this._url}/sign-in`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
@@ -38,7 +38,7 @@ class Auth extends BaseApi {
 }
 
 const auth = new Auth({
-  url: 'https://auth.nomoreparties.co',
+  url: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
     authorization: `Bearer ${localStorage.getItem('token')}`

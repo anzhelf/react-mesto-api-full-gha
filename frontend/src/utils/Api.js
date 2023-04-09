@@ -76,10 +76,10 @@ class Api extends BaseApi {
 }
 
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-50',
+  url: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
-    authorization: '653fc287-1617-4fdf-ab2c-e8fd91183c7f'
+    authorization: `Bearer ${localStorage.getItem('token')}`
   }
 });
 export { api };

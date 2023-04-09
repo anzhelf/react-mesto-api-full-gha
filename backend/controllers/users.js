@@ -112,7 +112,7 @@ const login = async (req, res, next) => {
       { expiresIn: '7d' },
     );
 
-    return res.status(200).send({ data: token });
+    return res.status(200).send({ token: token });
     // return res.cookie('jwt', token, {
     //   maxAge: 3600000 * 24 * 7,
     //   httpOnly: true,

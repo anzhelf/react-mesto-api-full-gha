@@ -67,7 +67,8 @@ const updateUser = async (req, res, next) => {
   try {
     const { name, about } = req.body;
     await User.findByIdAndUpdate(req.user._id, { name, about }, { new: true });
-    return res.json({ name, about });
+    const user = await User.findById(req.user._id);
+    return res.json(user);
   } catch (e) {
     if (e.name === 'ValidationError') {
       return next(new BadReqestError('Переданы некорректные данные для изменения информации.'));
@@ -80,7 +81,8 @@ const updateAvatar = async (req, res, next) => {
   try {
     const { avatar } = req.body;
     await User.findByIdAndUpdate(req.user._id, { avatar }, { new: true });
-    return res.json({ avatar });
+    const user = await User.findById(req.user._id);
+    return res.json(user);
   } catch (e) {
     if (e.name === 'ValidationError') {
       return next(new BadReqestError('Переданы некорректные данные для изменения фотографии профиля.'));

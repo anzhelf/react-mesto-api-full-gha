@@ -5,7 +5,7 @@ class Auth extends BaseApi {
     super(config);
     this._url = config.url;
     this._headers = config.headers;
-    this._headers.authorization = config.headers.authorization;
+    // this._headers.authorization = config.headers.authorization;
   }
 
   register(email, password) {
@@ -38,9 +38,10 @@ class Auth extends BaseApi {
   }
 
   setToken(token) {
-    this.headers = {
+    this._headers = {
       authorization: `Bearer ${token}`
     }
+    console.log(this._headers);
   }
 }
 

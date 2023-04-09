@@ -24,8 +24,8 @@ const PORT = 3001;
 // создали сервер
 const app = express();
 
-//статика
-app.use(express.static(patch.join(__dirname + 'frontend')));
+// статика
+app.use(express.static(patch.join(`${__dirname}frontend`)));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -37,7 +37,6 @@ app.use(requestLogger);
 //   res.header('Access-Control-Allow-Origin', "*");
 //   next();
 // });
-
 
 app.post('/sign-up', celebrate({
   body: Joi.object().keys({
@@ -65,7 +64,7 @@ app.use('/cards', cards);
 
 app.use('*', (req, res, next) => next(new NotFoundError('Страница не существует.')));
 
-//логирование
+// логирование
 app.use(errorLogger);
 
 // обработчик ошибок celebrate

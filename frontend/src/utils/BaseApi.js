@@ -5,6 +5,13 @@ export class BaseApi {
     this._headers = config.headers;
   }
 
+  get _headerz() {
+    return {
+      ...this._headers,
+      token: `Bearer ${localStorage.getItem('token')}`
+    }
+  }
+
   _checkResponse(res, err) {
     if (res.ok) {
       return res.json();
@@ -16,5 +23,9 @@ export class BaseApi {
 
   _request(url, options) {
     return fetch(url, options).then(this._checkResponse);
+  }
+
+  setToken(token) {
+    this._headers.authorization = `Bearer ${token}`
   }
 }

@@ -73,20 +73,14 @@ function App() {
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке 
     const isLiked = card.likes.some((id) => id === currentUser._id);
-
     if (!isLiked) {
-      console.log('нет лайка, передаем id в апи', card._id);
       api.likeCard(card._id)
         .then((newCard) => {
-          console.log('newCard', newCard);
           setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
-          console.log('cards', cards);
         })
         .catch((err) => console.log(err));
     }
-
     else {
-      console.log('есть лайк, передаем id в апи', card._id);
       api.deleteLikeCard(card._id)
         .then((newCard) => {
           setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))

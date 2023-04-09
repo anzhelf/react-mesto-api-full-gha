@@ -64,11 +64,9 @@ const updateLike = async (req, res, method, next) => {
     if (card === null) {
       throw new NotFoundError('Карточка по указанному id не найдена.');
     }
-    console.log(card.likes)
-    return res.send({ likes: card.likes });
+    return res.send(card);
   } catch (e) {
     if (e.name === 'CastError') {
-      console.log('легли', e);
       return next(new BadReqestError('Передан некорректный id карточки.'));
     }
     return next(e);

@@ -19,7 +19,7 @@ const { createUser, login } = require('./controllers/users');
 const errorHandler = require('./middlewares/errorHandler');
 const NotFoundError = require('./errors/NotFoundError');
 
-const PORT = 3001;
+const PORT = 3000;
 
 // создали сервер
 const app = express();

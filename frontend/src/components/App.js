@@ -176,6 +176,7 @@ function App() {
         localStorage.setItem('token', res.token);
         localStorage.setItem('email', data.email);
         auth.setToken(res.token);
+        api.setToken(res.token);
         setEmail(data.email);
         setLoggedIn(true);
         history.push('/');

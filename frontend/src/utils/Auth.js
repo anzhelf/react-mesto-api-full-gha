@@ -41,7 +41,6 @@ class Auth extends BaseApi {
     this._headers = {
       authorization: `Bearer ${token}`
     }
-    console.log(this._headers);
   }
 }
 

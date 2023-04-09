@@ -8,6 +8,7 @@ class Api extends BaseApi {
   }
 
   getDataUser() {
+    console.log(this._headers);
     return super._request(`${this._url}/users/me`, {
       method: 'GET',
       headers: this._headers
@@ -72,6 +73,12 @@ class Api extends BaseApi {
       method: 'DELETE',
       headers: this._headers,
     });
+  }
+
+  setToken(token) {
+    this._headers = {
+      authorization: `Bearer ${token}`
+    }
   }
 }
 

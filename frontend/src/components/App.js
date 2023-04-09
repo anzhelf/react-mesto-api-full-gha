@@ -43,13 +43,16 @@ function App() {
   const [requestStatus, setRequestStatus] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (loggedIn) {
-      Promise.all([api.getDataUser(), api.getInitialCards()])
+      Promise.all([api.getDataUser(token), api.getInitialCards(token)])
         .then(([dataUser, dataCards]) => {
           setCurrentUser(dataUser);
           setCards(dataCards);
+          console.log('получили данные')
+          console.log('токенн на момент поучения данных', token)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err, 'ошибка при получении данных'));
     }
   }, [loggedIn]);
 
@@ -174,11 +177,13 @@ function App() {
       .then((res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('email', data.email);
+        auth.setToken(data.token);
+        console.log('пишем токен', localStorage.getItem('token'));
         setEmail(data.email);
         setLoggedIn(true);
         history.push('/');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, 'handleAuthorization'));
   }
 
   function tokenCheck() {
@@ -186,21 +191,22 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       auth
-        .checkToken(token)
+        .checkToken()
         .then((res) => {
           if (res) {
+            console.log('авторизуем пользователя');
             // авторизуем пользователя
             setLoggedIn(true);
             history.push('/');
           }
         })
-        .catch((err) => console.log(err, "Ошибка авторизации."));
+        .catch((err) => console.log(err, "tokenCheck"));
     }
   }
 
   useEffect(() => {
     tokenCheck();
-  }, [])
+  }, [history])
 
   return (
     <div className="page">

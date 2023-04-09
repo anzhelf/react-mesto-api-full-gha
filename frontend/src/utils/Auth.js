@@ -5,6 +5,7 @@ class Auth extends BaseApi {
     super(config);
     this._url = config.url;
     this._headers = config.headers;
+    this._headers.authorization = config.headers.authorization;
   }
 
   register(email, password) {
@@ -34,6 +35,12 @@ class Auth extends BaseApi {
       method: 'GET',
       headers: this._headers
     });
+  }
+
+  setToken(token) {
+    this.headers = {
+      authorization: `Bearer ${token}`
+    }
   }
 }
 

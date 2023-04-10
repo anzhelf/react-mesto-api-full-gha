@@ -1,6 +1,8 @@
 // app.js включает основную логику сервера,
 // запуск и подключение к базе данных;
 // подключаем пакеты
+require('dotenv').config();
+const { PORT, DB_ADDRESS } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
 const patch = require('path');
@@ -19,13 +21,11 @@ const { createUser, login } = require('./controllers/users');
 const errorHandler = require('./middlewares/errorHandler');
 const NotFoundError = require('./errors/NotFoundError');
 
-const PORT = 3001;
-
 // создали сервер
 const app = express();
 
 // статика
-app.use(express.static(patch.join(`${__dirname}frontend`)));
+app.use(express.static(patch.join(__dirname, '../frontend/build')));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -33,10 +33,11 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-// app.use(function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', "*");
-//   next();
-// });
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/sign-up', celebrate({
   body: Joi.object().keys({
@@ -76,7 +77,7 @@ app.use(errorHandler);
 // включаем валидацию базы
 mongoose.set('runValidators', true);
 // соединяемся с базой
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+mongoose.connect(DB_ADDRESS, {
   useNewUrlParser: true,
 }, () => {
   console.log('Connected to MongoDb');

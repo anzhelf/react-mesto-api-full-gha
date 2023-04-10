@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (loggedIn) {
-      Promise.all([api.getDataUser(token), api.getInitialCards(token)])
+      Promise.all([api.getDataUser(), api.getInitialCards()])
         .then(([dataUser, dataCards]) => {
           setCurrentUser(dataUser);
           setCards(dataCards);

@@ -75,7 +75,7 @@ class Api extends BaseApi {
 
 const api = new Api({
   // url: 'http://localhost:3001',
-  url: 'https://backend.anzhelf-mesto.nomoredomains.monster',
+  url: 'https://api.backend.anzhelf-mesto.nomoredomains.monster',
   headers: {
     'Content-Type': 'application/json',
     authorization: `Bearer ${localStorage.getItem('token')}`

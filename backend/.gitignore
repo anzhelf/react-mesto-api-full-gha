@@ -16,3 +16,5 @@ node_modules
 
 # Do not save folders with logs to github
 *.log
+
+.env

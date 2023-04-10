@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
   let payload;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new UnauthorizedError('Необходима авторизация');
+    next(new UnauthorizedError('Необходима авторизация.'));
+    return;
   }
   // извлечём токен
   const token = authorization.replace('Bearer ', '');

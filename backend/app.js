@@ -3,6 +3,7 @@
 // подключаем пакеты
 require('dotenv').config();
 const { PORT, DB_ADDRESS } = process.env;
+const { options } = require('./options');
 const express = require('express');
 const mongoose = require('mongoose');
 const patch = require('path');
@@ -27,7 +28,9 @@ const app = express();
 // статика
 app.use(express.static(patch.join(__dirname, '../frontend/build')));
 
-app.use(cors());
+//app.use(cors());
+app.use('*', cors(options));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 

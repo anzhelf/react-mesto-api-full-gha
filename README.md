@@ -8,8 +8,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.89.173
 
-Frontend https://...
+Frontend https://backend.anzhelf-mesto.nomoredomains.monster
 
-Backend https://backend.anzhelf-mesto.nomoredomains.monster
+Backend https://api.backend.anzhelf-mesto.nomoredomains.monster

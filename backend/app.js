@@ -2,6 +2,7 @@
 // запуск и подключение к базе данных;
 // подключаем пакеты
 require('dotenv').config();
+
 const { PORT, DB_ADDRESS } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
@@ -15,7 +16,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
-//const router = require('./routes');
+// const router = require('./routes');
 
 const { createUser, login } = require('./controllers/users');
 const errorHandler = require('./middlewares/errorHandler');

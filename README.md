@@ -29,7 +29,9 @@
 
 `HTML5` `CSS3` `JS` `BEM` `Flex` `Grid` `ООП` `API` `React` `JSX` `NodeJS` `Express` `Mongoose` `MongoDB`
 
-Макеты проекта Figma: [приложение](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1), [формы авторизации и регистрации](https://www.figma.com/file/5H3gsn5lIGPwzBPby9jAOo/Sprint-14-RU?node-id=0%3A1.).
+Макеты проекта Figma:
+[приложение](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1),
+[формы авторизации и регистрации](https://www.figma.com/file/5H3gsn5lIGPwzBPby9jAOo/Sprint-14-RU?node-id=0%3A1.).
 
 ### Ссылки на проект:
 
